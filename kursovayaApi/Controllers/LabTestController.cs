@@ -8,12 +8,12 @@ namespace kursovayaApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class LabTestContrller : ControllerBase
+    public class LabTestController : ControllerBase
     {
         private readonly KursovayaContext db;
         private readonly LabTestService service;
 
-        public LabTestContrller(KursovayaContext db)
+        public LabTestController(KursovayaContext db)
         {
             this.db = db;
             service = new LabTestService(db);

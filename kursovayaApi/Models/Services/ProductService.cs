@@ -60,5 +60,16 @@ namespace kursovayaApi.Models.Services
             });
             return result;
         }
+        public bool Archive(int id)
+        {
+            bool res = DoAction(() =>
+            {
+                Product product = db.Products.FirstOrDefault(p => p.ProductId == id)!;
+                product.Status = "discontinued";
+                db.Products.Update(product);
+                db.SaveChanges();
+            });
+            return res;
+        }
     }
 }

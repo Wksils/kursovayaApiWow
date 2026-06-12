@@ -50,5 +50,11 @@ namespace kursovayaApi.Controllers
                 return NoContent();
             return NotFound();
         }
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> Archive(int id)
+        {
+            if (service.Archive(id)) return Ok();
+            return BadRequest();
+        }
     }
 }

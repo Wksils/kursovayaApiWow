@@ -4,6 +4,7 @@ using kursovayaApi.Models.Services;
 using kursovayaApi.Models.Abstractions;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -71,4 +72,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+var context = app.Services.CreateScope().ServiceProvider.
+    GetRequiredService<KursovayaContext>();
+SeedData.SeedDatabase(context);
 app.Run();
