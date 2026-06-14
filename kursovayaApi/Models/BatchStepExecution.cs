@@ -34,4 +34,8 @@ public partial class BatchStepExecution
     public virtual User? StartedByNavigation { get; set; }
     [JsonIgnore]
     public virtual TechStep? Step { get; set; } = null!;
+    [JsonIgnore]
+    public virtual ICollection<ExtruderTelemetry> ExtruderTelemetries { get; set; } = new List<ExtruderTelemetry>();
+    [JsonIgnore]
+    public virtual ICollection<ExtruderEvent> ExtruderEvents { get; set; } = new List<ExtruderEvent>();
 }

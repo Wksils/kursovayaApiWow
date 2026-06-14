@@ -19,4 +19,6 @@ public partial class UnitsOfMeasure
     public virtual ICollection<RawMaterial>? RawMaterials { get; set; } = new List<RawMaterial>();
     [JsonIgnore]
     public virtual ICollection<RecipeComponent>? RecipeComponents { get; set; } = new List<RecipeComponent>();
+    [JsonIgnore]
+    public virtual ICollection<ExtruderTelemetry> ExtruderTelemetries { get; set; } = new List<ExtruderTelemetry>();
 }

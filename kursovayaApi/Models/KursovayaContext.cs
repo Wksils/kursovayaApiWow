@@ -42,6 +42,8 @@ public partial class KursovayaContext : DbContext
     public virtual DbSet<UnitsOfMeasure> UnitsOfMeasures { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<ExtruderTelemetry> ExtruderTelemetries { get; set; }
+    public virtual DbSet<ExtruderEvent> ExtruderEvents { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder){
         // Оставляем пустым, строку будем брать из appsettings.json
@@ -542,6 +544,60 @@ public partial class KursovayaContext : DbContext
                 .HasMaxLength(30)
                 .HasDefaultValue("operator")
                 .HasColumnName("role");
+        });
+        modelBuilder.Entity<ExtruderTelemetry>(entity =>
+        {
+            entity.HasKey(e => e.TelemetryId).HasName("PK__extruder_telemetry");
+            entity.ToTable("extruder_telemetry");
+            entity.HasIndex(e => new { e.ExecutionId, e.RecordedAt }, "ix_tel_exec_time");
+            entity.Property(e => e.TelemetryId).HasColumnName("telemetry_id");
+            entity.Property(e => e.ExecutionId).HasColumnName("execution_id");
+            entity.Property(e => e.Zone).HasMaxLength(50).HasColumnName("zone");
+            entity.Property(e => e.ParameterName).HasMaxLength(100).HasColumnName("parameter_name");
+            entity.Property(e => e.TargetValue).HasColumnType("decimal(18, 4)").HasColumnName("target_value");
+            entity.Property(e => e.ActualValue).HasColumnType("decimal(18, 4)").HasColumnName("actual_value");
+            entity.Property(e => e.UomId).HasColumnName("uom_id");
+            entity.Property(e => e.RecordedAt)
+                .HasDefaultValueSql("(sysutcdatetime())")
+                .HasColumnName("recorded_at");
+ 
+            entity.HasOne(d => d.Execution).WithMany(p => p.ExtruderTelemetries)
+                .HasForeignKey(d => d.ExecutionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__extruder_tel__execution_id");
+ 
+            entity.HasOne(d => d.Uom).WithMany(p => p.ExtruderTelemetries)
+                .HasForeignKey(d => d.UomId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK__extruder_tel__uom_id");
+        });
+        modelBuilder.Entity<ExtruderEvent>(entity =>
+        {
+            entity.HasKey(e => e.EventId).HasName("PK__extruder_events");
+            entity.ToTable("extruder_events");
+            entity.HasIndex(e => e.ExecutionId, "ix_evt_exec");
+            entity.Property(e => e.EventId).HasColumnName("event_id");
+            entity.Property(e => e.ExecutionId).HasColumnName("execution_id");
+            entity.Property(e => e.Zone).HasMaxLength(50).HasColumnName("zone");
+            entity.Property(e => e.EventType).HasMaxLength(20).HasColumnName("event_type");
+            entity.Property(e => e.ParameterName).HasMaxLength(100).HasColumnName("parameter_name");
+            entity.Property(e => e.ActualValue).HasColumnType("decimal(18, 4)").HasColumnName("actual_value");
+            entity.Property(e => e.TargetValue).HasColumnType("decimal(18, 4)").HasColumnName("target_value");
+            entity.Property(e => e.Description).HasMaxLength(500).HasColumnName("description");
+            entity.Property(e => e.RecordedBy).HasColumnName("recorded_by");
+            entity.Property(e => e.RecordedAt)
+                .HasDefaultValueSql("(sysutcdatetime())")
+                .HasColumnName("recorded_at");
+
+            entity.HasOne(d => d.Execution).WithMany(p => p.ExtruderEvents)
+                .HasForeignKey(d => d.ExecutionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__extruder_evt__execution_id");
+
+            entity.HasOne(d => d.RecordedByUser).WithMany(p => p.ExtruderEvents)
+                .HasForeignKey(d => d.RecordedBy)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK__extruder_evt__recorded_by");
         });
 
         OnModelCreatingPartial(modelBuilder);

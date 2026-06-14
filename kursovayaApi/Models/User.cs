@@ -43,4 +43,6 @@ public partial class User
     public virtual ICollection<TechCard>? TechCardApprovedByNavigations { get; set; } = new List<TechCard>();
     [JsonIgnore]
     public virtual ICollection<TechCard>? TechCardCreatedByNavigations { get; set; } = new List<TechCard>();
+    [JsonIgnore]
+    public virtual ICollection<ExtruderEvent> ExtruderEvents { get; set; } = new List<ExtruderEvent>();
 }
