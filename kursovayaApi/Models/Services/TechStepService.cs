@@ -21,6 +21,10 @@ namespace kursovayaApi.Models.Services
             });
             return result;
         }
+        public async Task<IEnumerable<TechStep>> GetByCard(int id)
+        {
+            return await db.TechSteps.Where(p => p.CardId == id).ToListAsync();
+        }
 
         public bool Delete(int id)
         {

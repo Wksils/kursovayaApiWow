@@ -32,7 +32,10 @@ namespace kursovayaApi.Models.Services
             });
             return result;
         }
-
+        public async Task<IEnumerable<RecipeComponent>> GetByRecipe(int id)
+        {
+            return await db.RecipeComponents.Where(p => p.RecipeId == id).ToListAsync();
+        }
         public async Task<RecipeComponent> Get(int id)
         {
             var res = await db.RecipeComponents.FirstOrDefaultAsync(p => p.ComponentId == id);

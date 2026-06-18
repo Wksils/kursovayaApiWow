@@ -38,6 +38,7 @@ namespace kursovayaApi.Models.Services
             {
                 Recipe recipe = db.Recipes.FirstOrDefault(p => p.RecipeId == id)!;
                 recipe.IsActive = false;
+                recipe.Status = "archived";
                 db.Recipes.Update(recipe);
                 db.SaveChanges();
             });

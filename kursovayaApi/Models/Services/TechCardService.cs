@@ -38,6 +38,7 @@ namespace kursovayaApi.Models.Services
             {
                 TechCard card = db.TechCards.FirstOrDefault(p => p.CardId == id)!;
                 card.IsActive = false;
+                card.Status = "archived";
                 db.TechCards.Update(card);
                 db.SaveChanges();
             });

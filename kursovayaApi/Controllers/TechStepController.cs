@@ -29,6 +29,11 @@ namespace kursovayaApi.Controllers
             var step = service.Get(id).Result;
             return step == null ? NotFound(new {message = "шаг не найден"}) : Ok(step);
         }
+        [HttpGet("byCard/{id}")]
+        public async Task<ActionResult<IEnumerable<TechStep>>> GetSteps(int id)
+        {
+            return Ok(await service.GetByCard(id));
+        }
         [HttpPost]
         public async Task<ActionResult<TechStep>> Create([FromBody] TechStep step)
         {

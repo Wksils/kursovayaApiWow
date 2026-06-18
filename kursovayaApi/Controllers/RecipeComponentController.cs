@@ -29,6 +29,11 @@ namespace kursovayaApi.Controllers
             var component = service.Get(id).Result;
             return component == null? NotFound(new {message = "компонент рецептуры не найден"}) : Ok(component);
         }
+        [HttpGet("byRecipe/{id}")]
+        public async Task<ActionResult<IEnumerable<RecipeComponent>>> GetRecipe(int id)
+        {
+            return Ok(await service.GetByRecipe(id));
+        }
         [HttpPost]
         public async Task<ActionResult<RecipeComponent>> Create([FromBody] RecipeComponent component)
         {
