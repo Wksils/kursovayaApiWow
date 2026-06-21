@@ -8,8 +8,8 @@ public partial class LabTest
 {
     public int TestId { get; set; }
 
-    public int BatchId { get; set; }
-
+    public int? BatchId { get; set; }
+    public int? MatBatchId { get; set; }
     public string TestType { get; set; } = null!;
 
     public string Status { get; set; } = null!;
@@ -29,10 +29,15 @@ public partial class LabTest
     public DateTime? DecisionAt { get; set; }
 
     public DateTime CreatedAt { get; set; }
+    public string Priority { get; set; } = null!;
+    public string? Comment { get; set; }
+    public string? ControlledParameters { get; set; }
     [JsonIgnore]
     public virtual User? AssignedToNavigation { get; set; }
     [JsonIgnore]
     public virtual ProductionBatch? Batch { get; set; } = null!;
+    [JsonIgnore]
+    public virtual MaterialBatch? MatBatch { get; set; }
     [JsonIgnore]
     public virtual User? DecisionByNavigation { get; set; }
 }

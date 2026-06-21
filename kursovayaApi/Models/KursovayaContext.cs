@@ -149,6 +149,12 @@ public partial class KursovayaContext : DbContext
             entity.Property(e => e.TestType)
                 .HasMaxLength(20)
                 .HasColumnName("test_type");
+            entity.Property(e => e.MatBatchId).HasColumnName("mat_batch_id");
+
+            entity.HasOne(d => d.MatBatch).WithMany(p => p.LabTests)
+                .HasForeignKey(d => d.MatBatchId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__lab_tests__mat_batch_id");
 
             entity.HasOne(d => d.AssignedToNavigation).WithMany(p => p.LabTestAssignedToNavigations)
                 .HasForeignKey(d => d.AssignedTo)
@@ -156,7 +162,7 @@ public partial class KursovayaContext : DbContext
 
             entity.HasOne(d => d.Batch).WithMany(p => p.LabTests)
                 .HasForeignKey(d => d.BatchId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK__lab_tests__batch__2BFE89A6");
 
             entity.HasOne(d => d.DecisionByNavigation).WithMany(p => p.LabTestDecisionByNavigations)
@@ -193,6 +199,9 @@ public partial class KursovayaContext : DbContext
                 .HasMaxLength(200)
                 .HasColumnName("supplier");
             entity.Property(e => e.UomId).HasColumnName("uom_id");
+            entity.Property(e => e.StorageLocation)
+                .HasMaxLength(100)
+                .HasColumnName("storage_location");
 
             entity.HasOne(d => d.Material).WithMany(p => p.MaterialBatches)
                 .HasForeignKey(d => d.MaterialId)

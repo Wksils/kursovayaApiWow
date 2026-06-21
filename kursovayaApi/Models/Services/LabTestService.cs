@@ -50,6 +50,7 @@ namespace kursovayaApi.Models.Services
             {
                 LabTest lab = db.LabTests.FirstOrDefault(p => p.TestId == id)!;
                 lab.BatchId = model.BatchId;
+                lab.MatBatchId = model.MatBatchId;
                 lab.TestType=model.TestType;
                 lab.Status=model.Status;
                 lab.AssignedTo=model.AssignedTo;
@@ -60,6 +61,9 @@ namespace kursovayaApi.Models.Services
                 lab.DecisionBy=model.DecisionBy;
                 lab.DecisionAt=model.DecisionAt;
                 lab.CreatedAt=model.CreatedAt;
+                lab.Priority = model.Priority;
+                lab.Comment = model.Comment;
+                lab.ControlledParameters = model.ControlledParameters;
                 db.LabTests.Update(lab);
                 db.SaveChanges();
             });

@@ -58,6 +58,12 @@ namespace kursovayaApi.Models.Services
                 material.ExpiryDate=model.ExpiryDate;
                 material.ReceivedAt=model.ReceivedAt;
                 material.Status=model.Status;
+                material.StorageLocation = model.StorageLocation;
+                material.QaDecision = model.QaDecision;
+                material.DecisionBy = model.DecisionBy;
+                material.DecisionAt = model.DecisionAt;
+                material.DecisionComment = model.DecisionComment;
+                material.DecisionReason = model.DecisionReason;
                 db.MaterialBatches.Update(material);
                 db.SaveChanges();
             });
