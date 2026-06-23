@@ -45,4 +45,6 @@ public partial class User
     public virtual ICollection<TechCard>? TechCardCreatedByNavigations { get; set; } = new List<TechCard>();
     [JsonIgnore]
     public virtual ICollection<ExtruderEvent> ExtruderEvents { get; set; } = new List<ExtruderEvent>();
+    [JsonIgnore]
+    public virtual ICollection<MaterialBatch> MaterialBatchDecisions { get; set; } = new List<MaterialBatch>();
 }

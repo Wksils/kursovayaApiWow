@@ -45,7 +45,8 @@ public partial class KursovayaContext : DbContext
     public virtual DbSet<ExtruderTelemetry> ExtruderTelemetries { get; set; }
     public virtual DbSet<ExtruderEvent> ExtruderEvents { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder){
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
         // Оставляем пустым, строку будем брать из appsettings.json
     }
 
@@ -150,6 +151,17 @@ public partial class KursovayaContext : DbContext
                 .HasMaxLength(20)
                 .HasColumnName("test_type");
             entity.Property(e => e.MatBatchId).HasColumnName("mat_batch_id");
+            entity.Property(e => e.Priority)
+            .HasMaxLength(20)
+            .HasDefaultValue("normal")
+            .HasColumnName("priority");
+
+            entity.Property(e => e.Comment)
+                .HasMaxLength(1000)
+                .HasColumnName("comment");
+            entity.Property(e => e.ControlledParameters)
+     .HasMaxLength(2000)
+     .HasColumnName("controlled_parameters");
 
             entity.HasOne(d => d.MatBatch).WithMany(p => p.LabTests)
                 .HasForeignKey(d => d.MatBatchId)
@@ -202,6 +214,28 @@ public partial class KursovayaContext : DbContext
             entity.Property(e => e.StorageLocation)
                 .HasMaxLength(100)
                 .HasColumnName("storage_location");
+            entity.Property(e => e.QaDecision)
+            .HasMaxLength(20)
+            .HasColumnName("qa_decision");
+
+            entity.Property(e => e.DecisionBy)
+                .HasColumnName("decision_by");
+
+            entity.Property(e => e.DecisionAt)
+                .HasColumnName("decision_at");
+
+            entity.Property(e => e.DecisionComment)
+                .HasMaxLength(1000)
+                .HasColumnName("decision_comment");
+
+            entity.Property(e => e.DecisionReason)
+                .HasMaxLength(500)
+                .HasColumnName("decision_reason");
+
+            entity.HasOne(d => d.DecisionByNavigation).WithMany(p => p.MaterialBatchDecisions)
+                .HasForeignKey(d => d.DecisionBy)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK__material___decision_by");
 
             entity.HasOne(d => d.Material).WithMany(p => p.MaterialBatches)
                 .HasForeignKey(d => d.MaterialId)
@@ -569,12 +603,12 @@ public partial class KursovayaContext : DbContext
             entity.Property(e => e.RecordedAt)
                 .HasDefaultValueSql("(sysutcdatetime())")
                 .HasColumnName("recorded_at");
- 
+
             entity.HasOne(d => d.Execution).WithMany(p => p.ExtruderTelemetries)
                 .HasForeignKey(d => d.ExecutionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__extruder_tel__execution_id");
- 
+
             entity.HasOne(d => d.Uom).WithMany(p => p.ExtruderTelemetries)
                 .HasForeignKey(d => d.UomId)
                 .OnDelete(DeleteBehavior.SetNull)

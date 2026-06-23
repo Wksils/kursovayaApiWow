@@ -37,4 +37,6 @@ public partial class MaterialBatch
     public virtual UnitsOfMeasure? Uom { get; set; } = null!;
     [JsonIgnore]
     public virtual ICollection<LabTest> LabTests { get; set; } = new List<LabTest>();
+    [JsonIgnore]
+    public virtual User? DecisionByNavigation { get; set; }
 }
